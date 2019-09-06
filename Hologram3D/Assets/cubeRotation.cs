@@ -14,6 +14,6 @@ public class cubeRotation : MonoBehaviour
     void Update()
     {
         this.gameObject.transform.Rotate(Vector3.up, 3.0f);
-        Debug.Log("rotating..."); 
+        //Debug.Log("rotating..."); 
     }
 }

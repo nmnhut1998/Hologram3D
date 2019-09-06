@@ -55,9 +55,10 @@ def expression_recognize(img):
         # print predictions
         print("\nProbabilities are " + str(res[0])+"\n")
         print("Emotion is "+ get_label(result_num))
+        return (result_num,res[0][result_num]); 
     
 
-def start_server(): 
+def start_server(res_arr): 
   
 
 
@@ -87,31 +88,39 @@ def start_server():
     #wait to accept a connection - blocking call
     conn, addr = s.accept()
     print ('Connected with ' + addr[0] + ':' + str(addr[1]))
-    # send a thank you message to the client.  
-    
-    conn.send('Thank you for connecting'.encode('utf-8')) 
+    # send a message to the client.
+    l = len(res_arr)
+    l = str(l).zfill(13)
+    print('send : '+l); 
+    conn.send(l.encode('utf-8')); 
+    for item in res_arr: 
+        conn.send(str(item[0]).zfill(13).encode('utf-8'))
+        conn.send(str(item[1]).zfill(13).encode('utf-8'))
+        print('send',item[0],item[1]) 
 
   s.close()
 
 def video_process(): 
   cap = cv2.VideoCapture("C:/Users/nmnhut/Pictures/Camera Roll/test.mp4")
+  train_result = []
   while(cap.isOpened()):
     ret, frame = cap.read()
     if (ret):
         #cv2.imshow('frame',frame)
-        expression_recognize(frame);
+        train_result.append(expression_recognize(frame));
     else:
         break
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(2) & 0xFF == ord('q'):
         break
     if (not ret):
         break
 
   cap.release()
-  cv2.destroyAllWindows()
+  #cv2.destroyAllWindows()
+  return train_result; 
 
 
-video_process();
-start_server();
+result = video_process();
+start_server(result);
 
 

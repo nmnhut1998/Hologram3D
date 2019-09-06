@@ -26,36 +26,37 @@ def get_label(argument):
 
 def expression_recognize(img):
     faces = face_cascade.detectMultiScale(np.asarray(img), 1.3, 5)
+
     for (x, y, w, h) in faces:
         if len(faces) == 1: #Use simple check if one face is detected, or multiple (measurement error unless multiple persons on image)
             crop_img = img[y:y+h, x:x+w]
+            #Resizing image to required size
+            test_image = cv2.resize(crop_img,(64,64),0,0,interpolation = cv2.INTER_AREA)
+
+            #Converting image to array
+            test_image = np.array(test_image)
+
+            #converting to grayscale
+            gray = cv2.cvtColor(test_image, cv2.COLOR_BGR2GRAY)
+
+            #scale pixels values to lie between 0 and 1 because we did same to our train and test set
+            gray = gray/255
+
+            #reshaping image (-1 is used to automatically fit an integer at it's place to match dimension of original image)
+            gray = gray.reshape(-1, 64, 64, 1)
+
+            res = pretrained_model.predict(gray)
+
+            #argmax returns index of max value
+            result_num = np.argmax(res[0])
+
+            # print predictions
+            print("\nProbabilities are " + str(res[0])+"\n")
+            print("Emotion is "+ get_label(result_num))
+            return (result_num,res[0][result_num]); 
+        
         else:
             print("multiple faces detected, passing over image")
-
-        #Resizing image to required size
-        test_image = cv2.resize(crop_img,(64,64),0,0,interpolation = cv2.INTER_AREA)
-
-        #Converting image to array
-        test_image = np.array(test_image)
-
-        #converting to grayscale
-        gray = cv2.cvtColor(test_image, cv2.COLOR_BGR2GRAY)
-
-        #scale pixels values to lie between 0 and 1 because we did same to our train and test set
-        gray = gray/255
-
-        #reshaping image (-1 is used to automatically fit an integer at it's place to match dimension of original image)
-        gray = gray.reshape(-1, 64, 64, 1)
-
-        res = pretrained_model.predict(gray)
-
-        #argmax returns index of max value
-        result_num = np.argmax(res[0])
-
-        # print predictions
-        print("\nProbabilities are " + str(res[0])+"\n")
-        print("Emotion is "+ get_label(result_num))
-        return (result_num,res[0][result_num]); 
     
 
 def start_server(res_arr): 
@@ -81,7 +82,7 @@ def start_server(res_arr):
   s.listen(10)
   print ('Socket now listening')
 
-
+  #s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 
   #now keep talking with the client
   while 1:
@@ -101,8 +102,8 @@ def start_server(res_arr):
 
   s.close()
 
-def video_process(): 
-  cap = cv2.VideoCapture("C:/Users/nmnhut/Pictures/Camera Roll/test.mp4")
+def video_process(path): 
+  cap = cv2.VideoCapture(path)
   train_result = []
   while(cap.isOpened()):
     ret, frame = cap.read()
@@ -121,7 +122,8 @@ def video_process():
   return train_result; 
 
 
-result = video_process();
+#"C:/Users/Hannah/Desktop/Hologram3D-master/What are the Core Emotions - The 6 Basic Emotions.mp4"
+#"C:/Users/Hannah/Desktop/Hologram3D-master/What are the Core Emotions - The 6 Basic Emotions_Trim.mp4"
+#"C:/Users/nmnhut/Pictures/Camera Roll/test.mp4"
+result = video_process("C:/Users/Hannah/Desktop/Hologram3D-master/What are the Core Emotions - The 6 Basic Emotions_Trim.mp4");
 start_server(result);
-
-

@@ -17,20 +17,19 @@ public class ChangeExpression : MonoBehaviour
     }
     void changeExpression(float[] input)
     {
+      
         SkinnedMeshRenderer renderer = this.gameObject.GetComponent<SkinnedMeshRenderer>();
         var expressionID = (int)input[0];
+        Debug.Log("Change expression to : " + expressionID);
+        for (int i = 0; i < 6; ++i)
+        {
+            renderer.SetBlendShapeWeight(expressionID, 0);
+
+        }
         if (expressionID != 6)
         {
-            renderer.SetBlendShapeWeight(expressionID, input[1]);
+            renderer.SetBlendShapeWeight(expressionID, 100);
         }
-        else
-        {
-            //neutral expression
-            for (int i =0; i < 6; ++i)
-            {
-                renderer.SetBlendShapeWeight(expressionID, 0);
-
-            }
-        }
+       
     }
 }

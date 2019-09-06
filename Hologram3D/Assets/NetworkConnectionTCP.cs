@@ -46,8 +46,9 @@ public class NetworkConnectionTCP : MonoBehaviour
 
     private void Update()
     {
-        if (previousCount < paramzs.Count && Input.GetKey(KeyCode.Return))
+        if (previousCount < paramzs.Count && Input.GetKey(KeyCode.Space))
         {
+            Debug.Log("Key pressed!"); 
             expressionChanger.SendMessage("changeExpression", paramzs[previousCount]);
             previousCount += 1; 
         }
@@ -83,7 +84,7 @@ public class NetworkConnectionTCP : MonoBehaviour
             // Receive the TcpServer.response.
 
             // Buffer to store the response bytes.
-            data = new byte[28];
+            data = new byte[13];
 
             // String to store the response ASCII representation.
             string responseData = string.Empty;

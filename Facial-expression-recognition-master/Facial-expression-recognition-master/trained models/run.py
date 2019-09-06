@@ -93,10 +93,11 @@ def start_server(res_arr):
     l = str(l).zfill(13)
     print('send : '+l); 
     conn.send(l.encode('utf-8')); 
-    for item in res_arr: 
-        conn.send(str(item[0]).zfill(13).encode('utf-8'))
-        conn.send(str(item[1]).zfill(13).encode('utf-8'))
-        print('send',item[0],item[1]) 
+    for item in res_arr:
+        if (item is not None):
+            conn.send(str(item[0]).zfill(13).encode('utf-8'))
+            conn.send(str(item[1]).zfill(13).encode('utf-8'))
+            print('send',item[0],item[1]) 
 
   s.close()
 

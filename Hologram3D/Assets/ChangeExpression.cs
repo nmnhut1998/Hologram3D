@@ -23,7 +23,7 @@ public class ChangeExpression : MonoBehaviour
         Debug.Log("Change expression to : " + expressionID);
         for (int i = 0; i < 6; ++i)
         {
-            renderer.SetBlendShapeWeight(expressionID, 0);
+            renderer.SetBlendShapeWeight(i, 0);
 
         }
         if (expressionID != 6)

@@ -13,7 +13,7 @@ public class cubeRotation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.gameObject.transform.Rotate(Vector3.up, 3.0f);
+        this.gameObject.transform.Rotate(Vector3.up, 1.0f);
         //Debug.Log("rotating..."); 
     }
 }

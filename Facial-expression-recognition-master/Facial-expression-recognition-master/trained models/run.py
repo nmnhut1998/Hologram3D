@@ -125,5 +125,5 @@ def video_process(path):
 #"C:/Users/Hannah/Desktop/Hologram3D-master/What are the Core Emotions - The 6 Basic Emotions.mp4"
 #"C:/Users/Hannah/Desktop/Hologram3D-master/What are the Core Emotions - The 6 Basic Emotions_Trim.mp4"
 #"C:/Users/nmnhut/Pictures/Camera Roll/test.mp4"
-result = video_process("C:/Users/Hannah/Desktop/Hologram3D-master/What are the Core Emotions - The 6 Basic Emotions_Trim.mp4");
+result = video_process("C:/Users/nmnhut/Pictures/Camera Roll/test.mp4");
 start_server(result);

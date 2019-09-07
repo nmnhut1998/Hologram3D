@@ -18,8 +18,8 @@ public class NetworkConnectionTCP : MonoBehaviour
     Vector3 pos = Vector3.zero;
     public ChangeExpression expressionChanger;
     static int previousCount ;
-    static List<float[]> paramzs; 
-
+    static List<float[]> paramzs;
+    private int frameCountSkip = 0; 
 
     private void Start()
     {
@@ -46,11 +46,13 @@ public class NetworkConnectionTCP : MonoBehaviour
 
     private void Update()
     {
-        if (previousCount < paramzs.Count && Input.GetKey(KeyCode.Space))
-        {
-            Debug.Log("Key pressed!"); 
+        frameCountSkip += 1; 
+        if (previousCount < paramzs.Count && frameCountSkip > 10)
+        { 
+            Debug.Log("Change expression at " + Time.time); 
             expressionChanger.SendMessage("changeExpression", paramzs[previousCount]);
-            previousCount += 1; 
+            previousCount += 1;
+            frameCountSkip = 0; 
         }
     }
     void TryToConnect()
@@ -96,7 +98,7 @@ public class NetworkConnectionTCP : MonoBehaviour
             int count = int.Parse(responseData); 
             for (var i =0; i < count; ++i)
             {
-                data = new byte[256];
+                data = new byte[13];
 
                 // String to store the response ASCII representation.
                 responseData = string.Empty;
@@ -111,7 +113,7 @@ public class NetworkConnectionTCP : MonoBehaviour
                         responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
                         Debug.Log(i + ": " + "Received:  " + responseData);
 
-                        float expressionID = float.Parse(responseData);
+                        float expressionID = int.Parse(responseData);
                         bytes = stream.Read(data, 0, data.Length);
                         responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
                         if (responseData != "None")

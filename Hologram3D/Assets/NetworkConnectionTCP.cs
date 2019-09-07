@@ -47,7 +47,7 @@ public class NetworkConnectionTCP : MonoBehaviour
     private void Update()
     {
         frameCountSkip += 1; 
-        if (previousCount < paramzs.Count && frameCountSkip > 10)
+        if (previousCount < paramzs.Count && frameCountSkip > 100)
         { 
             Debug.Log("Change expression at " + Time.time); 
             expressionChanger.SendMessage("changeExpression", paramzs[previousCount]);

@@ -19,7 +19,7 @@ public class ChangeExpression : MonoBehaviour
         if (expressionID != -1 && value < 100  && expressionID != 6)
         {
             SkinnedMeshRenderer renderer = this.gameObject.GetComponent<SkinnedMeshRenderer>();
-            value += 10;
+            value += 1;
             renderer.SetBlendShapeWeight(expressionID, value);
         }
     }
